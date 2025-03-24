@@ -11,10 +11,9 @@ import { useCheckScore } from "./hooks/useData";
 
 function App() {
   const [text, setText] = useState("");
-  const [loading, setLoading] = useState(false);
   const [isDark, setIsDark] = useState(false);
 
-  const { data,checkScore } = useCheckScore();
+  const { data,checkScore,loading } = useCheckScore();
 
   useEffect(() => {
     if (isDark) {
@@ -26,9 +25,7 @@ function App() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true);
     await checkScore(text);
-    setLoading(false);
   };
 
   return (
