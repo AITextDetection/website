@@ -13,7 +13,7 @@ export const useCheckScore = () => {
     setLoading(true);
     try {
       const response = await axios.post(
-        `https://api.example.com/score`,
+        `http://0.0.0.0:8000/predict`,
         { text },
         {
           headers: {

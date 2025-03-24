@@ -60,9 +60,9 @@ function App() {
       </nav>
 
       {/* Main Content */}
-      <main className="relative max-w-4xl mx-auto px-4 py-12">
+      <main className="relative max-w-4xl mx-auto px-4 py-6">
         <div className="text-center mb-12 space-y-4">
-          <h1 className="text-6xl font-bold mb-4 text-gray-900 dark:text-transparent dark:bg-clip-text dark:bg-gradient-to-r from-gray-200 via-white to-gray-300 animate-gradient leading-tight">
+          <h1 className="text-4xl font-bold mb-4 text-gray-900 dark:text-transparent dark:bg-clip-text dark:bg-gradient-to-r from-gray-200 via-white to-gray-300 animate-gradient leading-tight">
             Detect AI-Generated Content
           </h1>
           <p className="text-lg text-gray-600 dark:text-gray-400">
@@ -70,7 +70,7 @@ function App() {
           </p>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-6">
+        <form onSubmit={handleSubmit} className="space-y-4">
           <div className="group relative">
             <div className="absolute -inset-1 bg-gradient-to-r from-gray-300 via-gray-200 to-gray-300 dark:from-gray-500 dark:via-gray-400 dark:to-gray-500 rounded-2xl blur opacity-30 group-hover:opacity-50 transition duration-1000"></div>
             <div className="relative bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl rounded-xl p-4 border border-gray-200 dark:border-white/10 transition-all duration-300">
@@ -78,7 +78,7 @@ function App() {
                 value={text}
                 onChange={(e) => setText(e.target.value)}
                 placeholder="Paste your text here for analysis..."
-                className="w-full h-48 bg-transparent border-0 focus:ring-0 resize-none placeholder-gray-400 dark:placeholder-gray-500 text-gray-900 dark:text-gray-200 text-lg"
+                className="w-full h-32 bg-transparent border-0 focus:ring-0 resize-none placeholder-gray-400 dark:placeholder-gray-500 text-gray-900 dark:text-gray-200 text-lg"
                 required
               />
             </div>
@@ -133,9 +133,9 @@ function App() {
                 <div className="relative bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl rounded-xl p-8 border border-gray-200 dark:border-white/10">
                   <div className="flex items-center space-x-4 mb-6">
                     <div className="p-3 rounded-xl bg-gray-100/50 dark:bg-gray-700/50 group-hover:bg-gray-200/50 dark:group-hover:bg-gray-700/70 transition-colors duration-300">
-                      <stat.icon className="w-8 h-8 text-gray-700 dark:text-gray-300" />
+                      <stat.icon className="w-4 h-4 text-gray-700 dark:text-gray-300" />
                     </div>
-                    <h3 className="text-2xl font-semibold text-gray-900 dark:text-gray-200">
+                    <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-200">
                       {stat.title}
                     </h3>
                   </div>
