@@ -1,19 +1,12 @@
 import React, { useState, useEffect } from "react";
-import {
-  Bot,
-  Loader2,
-  Brain,
-  FileText,
-  Sun,
-  Moon,
-} from "lucide-react";
+import { Bot, Loader2, Brain, FileText, Sun, Moon } from "lucide-react";
 import { useCheckScore } from "./hooks/useData";
 
 function App() {
   const [text, setText] = useState("");
   const [isDark, setIsDark] = useState(false);
 
-  const { data,checkScore,loading } = useCheckScore();
+  const { data, checkScore, loading, error } = useCheckScore();
 
   useEffect(() => {
     if (isDark) {
@@ -117,7 +110,9 @@ function App() {
             </div>
           </button>
         </form>
-
+        {error ? (
+          <div className="text-center text-red-700">Something went wrong</div>
+        ) : null}
         {/* Results Section */}
         {data && !loading && (
           <div className="mt-16 grid grid-cols-1 md:grid-cols-2 gap-8 animate-fade-in">
