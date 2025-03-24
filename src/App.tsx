@@ -1,38 +1,33 @@
-import React, { useState, useEffect } from 'react';
-import { Bot, Loader2, BarChart2, Brain, FileText, Percent, Sun, Moon } from 'lucide-react';
+import React, { useState, useEffect } from "react";
+import {
+  Bot,
+  Loader2,
+  Brain,
+  FileText,
+  Sun,
+  Moon,
+} from "lucide-react";
+import { useCheckScore } from "./hooks/useData";
 
 function App() {
-  const [text, setText] = useState('');
+  const [text, setText] = useState("");
   const [loading, setLoading] = useState(false);
   const [isDark, setIsDark] = useState(false);
-  const [results, setResults] = useState<null | {
-    aiProbability: number;
-    wordCount: number;
-    readability: number;
-    complexity: number;
-  }>(null);
+
+  const { data,checkScore } = useCheckScore();
 
   useEffect(() => {
     if (isDark) {
-      document.documentElement.classList.add('dark');
+      document.documentElement.classList.add("dark");
     } else {
-      document.documentElement.classList.remove('dark');
+      document.documentElement.classList.remove("dark");
     }
   }, [isDark]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    
-    await new Promise(resolve => setTimeout(resolve, 2000));
-    
-    setResults({
-      aiProbability: Math.random() * 100,
-      wordCount: text.split(/\s+/).filter(Boolean).length,
-      readability: Math.random() * 100,
-      complexity: Math.random() * 100,
-    });
-    
+    await checkScore(text);
     setLoading(false);
   };
 
@@ -103,49 +98,43 @@ function App() {
             type="submit"
             disabled={loading || !text.trim()}
             className={`relative w-full group ${
-              loading || !text.trim() 
-                ? 'opacity-50 cursor-not-allowed' 
-                : 'hover:scale-[1.02] active:scale-[0.98]'
+              loading || !text.trim()
+                ? "opacity-50 cursor-not-allowed"
+                : "hover:scale-[1.02] active:scale-[0.98]"
             }`}
           >
             <div className="absolute -inset-0.5 bg-gradient-to-r from-gray-300 via-gray-200 to-gray-300 dark:from-gray-500 dark:via-gray-400 dark:to-gray-500 rounded-xl blur opacity-30 group-hover:opacity-50 transition duration-1000"></div>
-            <div className={`relative px-8 py-4 bg-white dark:bg-gray-900 rounded-lg leading-none flex items-center justify-center`}>
+            <div
+              className={`relative px-8 py-4 bg-white dark:bg-gray-900 rounded-lg leading-none flex items-center justify-center`}
+            >
               {loading ? (
                 <span className="flex items-center justify-center text-gray-700 dark:text-gray-200">
                   <Loader2 className="animate-spin mr-2" />
                   Analyzing...
                 </span>
               ) : (
-                <span className="text-gray-700 dark:text-gray-200 font-medium">Analyze Text</span>
+                <span className="text-gray-700 dark:text-gray-200 font-medium">
+                  Analyze Text
+                </span>
               )}
             </div>
           </button>
         </form>
 
         {/* Results Section */}
-        {results && !loading && (
+        {data && !loading && (
           <div className="mt-16 grid grid-cols-1 md:grid-cols-2 gap-8 animate-fade-in">
             {[
               {
-                title: 'AI Probability',
-                value: `${results.aiProbability.toFixed(1)}%`,
-                icon: Brain
+                title: "AI Probability",
+                value: `${data.score.toFixed(1)}%`,
+                icon: Brain,
               },
               {
-                title: 'Word Count',
-                value: results.wordCount,
-                icon: FileText
+                title: "Word Count",
+                value: text.length,
+                icon: FileText,
               },
-              {
-                title: 'Readability Score',
-                value: `${results.readability.toFixed(1)}%`,
-                icon: BarChart2
-              },
-              {
-                title: 'Complexity Score',
-                value: `${results.complexity.toFixed(1)}%`,
-                icon: Percent
-              }
             ].map((stat, index) => (
               <div key={index} className="group relative">
                 <div className="absolute -inset-0.5 bg-gradient-to-r from-gray-300 to-gray-400 dark:from-gray-500 dark:to-gray-600 rounded-2xl blur opacity-30 group-hover:opacity-50 transition duration-1000"></div>
@@ -154,7 +143,9 @@ function App() {
                     <div className="p-3 rounded-xl bg-gray-100/50 dark:bg-gray-700/50 group-hover:bg-gray-200/50 dark:group-hover:bg-gray-700/70 transition-colors duration-300">
                       <stat.icon className="w-8 h-8 text-gray-700 dark:text-gray-300" />
                     </div>
-                    <h3 className="text-2xl font-semibold text-gray-900 dark:text-gray-200">{stat.title}</h3>
+                    <h3 className="text-2xl font-semibold text-gray-900 dark:text-gray-200">
+                      {stat.title}
+                    </h3>
                   </div>
                   <div className="text-5xl font-bold text-gray-900 dark:text-gray-200">
                     {stat.value}
