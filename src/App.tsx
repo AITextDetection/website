@@ -123,7 +123,7 @@ function App() {
                 icon: Brain,
               },
               {
-                title: "Word Count",
+                title: "Character Count",
                 value: text.length,
                 icon: FileText,
               },
