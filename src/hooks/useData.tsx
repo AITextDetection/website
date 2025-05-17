@@ -16,22 +16,24 @@ export const useCheckScore = () => {
   >(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
+
   const checkScore = async (text: string) => {
     setLoading(true);
     try {
-      const sentences = splitIntoTwoSentences(text);
+      const sentences = splitTextByWordLimitAndPunctuation(text);
       const results = await Promise.all(
         sentences.map(async (sentence) => {
           return {
-            score: (await handleScoreApi(sentence))?.score,
+            // score: (await handleScoreApi(sentence))?.score,
+            score: parseFloat((Math.random() * 100).toFixed(2)),
             len: sentence.length,
             sentence: sentence,
           };
         })
       );
       setData(results);
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (e) {
+      console.error("Something went wrong", e);
       setError("something went wrong");
     } finally {
       setLoading(false);
@@ -54,18 +56,36 @@ const handleScoreApi = async (text: string) => {
   return result;
 };
 
-export const splitIntoTwoSentences = (text: string): string[] => {
-  const sentences =
-    text
-      .match(/[^.!?]+[.!?]?/g) // Split by sentence-ending punctuation
-      ?.map((s) => s.trim())
-      .filter(Boolean) || [];
-
+export const splitTextByWordLimitAndPunctuation = (
+  text: string,
+  wordLimit = 50
+): string[] => {
   const result: string[] = [];
 
-  for (let i = 0; i < sentences.length; i += 2) {
-    const part = [sentences[i], sentences[i + 1]].filter(Boolean).join(" ");
-    result.push(part);
+  const words = text.split(/\s+/); // Split text into words
+  let start = 0;
+
+  while (start < words.length) {
+    const end = start + wordLimit;
+
+    // Ensure we don't go out of bounds
+    if (end >= words.length) {
+      result.push(words.slice(start).join(" "));
+      break;
+    }
+
+    // Scan forward for punctuation (., !, or ?) after wordLimit
+    let foundEnd = end;
+    for (let i = end; i < words.length; i++) {
+      if (/[.!?]$/.test(words[i])) {
+        foundEnd = i + 1; // include this word
+        break;
+      }
+    }
+
+    // Join words from start to foundEnd as a segment
+    result.push(words.slice(start, foundEnd).join(" "));
+    start = foundEnd;
   }
 
   return result;
