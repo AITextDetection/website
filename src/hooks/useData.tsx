@@ -24,8 +24,8 @@ export const useCheckScore = () => {
       const results = await Promise.all(
         sentences.map(async (sentence) => {
           return {
-            // score: (await handleScoreApi(sentence))?.score,
-            score: parseFloat((Math.random() * 100).toFixed(2)),
+            score: (await handleScoreApi(sentence))?.score,
+            // score: parseFloat((Math.random() * 100).toFixed(2)),
             len: sentence.length,
             sentence: sentence,
           };
