@@ -19,15 +19,15 @@ export default function TextForm({
     const count = text.trim().split(/\s+/).filter(Boolean).length;
     setWordCount(count);
 
-    if (count < 256) {
-      setError(`Text must be at least 256 words. Currently: ${count}`);
+    if (count < 40) {
+      setError(`Text must be at least 40 words. Currently: ${count}`);
     } else {
       setError("");
     }
   }, [text]);
 
   const onSubmit = (e: React.FormEvent) => {
-    if (wordCount < 256) {
+    if (wordCount < 40) {
       e.preventDefault();
       return;
     }
@@ -55,9 +55,9 @@ export default function TextForm({
 
       <button
         type="submit"
-        disabled={loading || wordCount < 256}
+        disabled={loading || wordCount < 40}
         className={`relative w-full group ${
-          loading || wordCount < 256
+          loading || wordCount < 40
             ? "opacity-50 cursor-not-allowed"
             : "hover:scale-[1.02] active:scale-[0.98]"
         }`}

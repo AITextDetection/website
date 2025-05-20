@@ -1,9 +1,9 @@
 const legendItems = [
   { color: "bg-green-200 dark:bg-green-700", label: "0–30% AI Probability" },
   { color: "bg-yellow-200 dark:bg-yellow-600", label: "31–50% AI Probability" },
-  { color: "bg-orange-300 dark:bg-orange-700", label: "51–70% AI Probability" },
-  { color: "bg-red-300 dark:bg-red-700", label: "71–90% AI Probability" },
-  { color: "bg-red-500 dark:bg-red-800", label: "91–100% AI Probability" },
+  { color: "bg-red-200 dark:bg-red-700", label: "51–70% AI Probability" },
+  { color: "bg-orange-300 dark:bg-orange-700", label: "71–90% AI Probability" },
+  { color: "bg-red-300 dark:bg-red-800", label: "91–100% AI Probability" },
 ];
 
 export const Legend = () => (
