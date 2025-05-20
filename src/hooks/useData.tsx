@@ -5,23 +5,6 @@ export type API_RESPONSE = {
   score: number;
 };
 
-export const adjustScore = (score: number, index: number): number => {
-  const adjustmentMap: Record<number, number> = {
-    0: 9,
-    1: 13,
-    2: 7,
-  };
-
-  if (score < 10 && index in adjustmentMap) {
-    score += adjustmentMap[index];
-  } else if (score > 90 && index in adjustmentMap) {
-    score -= adjustmentMap[index];
-  }
-
-  // Clamp score between 0 and 100
-  return Math.max(0, Math.min(100, score));
-};
-
 export const useCheckScore = () => {
   const [data, setData] = useState<
     | {
@@ -38,23 +21,10 @@ export const useCheckScore = () => {
     setLoading(true);
     try {
       const sentences = splitTextByWordLimitAndPunctuation(text);
-      // const results = await Promise.all(
-      //   sentences.map(async (sentence) => {
-      //     return {
-      //       score: (await handleScoreApi(sentence))?.score,
-      //       // score: parseFloat((Math.random() * 100).toFixed(2)),
-      //       len: sentence.length,
-      //       sentence: sentence,
-      //     };
-      //   })
-      // );
       const results = await Promise.all(
-        sentences.map(async (sentence, index) => {
-          const rawScore = (await handleScoreApi(sentence))?.score || 0;
-          const score = adjustScore(rawScore, index);
-
+        sentences.map(async (sentence) => {
           return {
-            score,
+            score: (await handleScoreApi(sentence))?.score,
             len: sentence.length,
             sentence: sentence,
           };
