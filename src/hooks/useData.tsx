@@ -58,7 +58,7 @@ const handleScoreApi = async (text: string) => {
 
 export const splitTextByWordLimitAndPunctuation = (
   text: string,
-  wordLimit = 50
+  wordLimit = 256
 ): string[] => {
   const result: string[] = [];
 

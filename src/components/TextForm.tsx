@@ -1,4 +1,5 @@
 import { Loader2 } from "lucide-react";
+import { useState, useEffect } from "react";
 
 export default function TextForm({
   text,
@@ -11,8 +12,30 @@ export default function TextForm({
   handleSubmit: (e: React.FormEvent) => void;
   loading: boolean;
 }) {
+  const [wordCount, setWordCount] = useState(0);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    const count = text.trim().split(/\s+/).filter(Boolean).length;
+    setWordCount(count);
+
+    if (count < 256) {
+      setError(`Text must be at least 256 words. Currently: ${count}`);
+    } else {
+      setError("");
+    }
+  }, [text]);
+
+  const onSubmit = (e: React.FormEvent) => {
+    if (wordCount < 256) {
+      e.preventDefault();
+      return;
+    }
+    handleSubmit(e);
+  };
+
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
+    <form onSubmit={onSubmit} className="space-y-4">
       <div className="group relative">
         <div className="absolute -inset-1 bg-gradient-to-r from-gray-300 via-gray-200 to-gray-300 dark:from-gray-500 dark:via-gray-400 dark:to-gray-500 rounded-2xl blur opacity-30 group-hover:opacity-50 transition duration-1000"></div>
         <div className="relative bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl rounded-xl p-4 border border-gray-200 dark:border-white/10 transition-all duration-300">
@@ -26,11 +49,15 @@ export default function TextForm({
         </div>
       </div>
 
+      {error && (
+        <p className="text-red-600 dark:text-red-400 text-sm">{error}</p>
+      )}
+
       <button
         type="submit"
-        disabled={loading || !text.trim()}
+        disabled={loading || wordCount < 256}
         className={`relative w-full group ${
-          loading || !text.trim()
+          loading || wordCount < 256
             ? "opacity-50 cursor-not-allowed"
             : "hover:scale-[1.02] active:scale-[0.98]"
         }`}
